@@ -87,3 +87,35 @@ HTTPClient req = (new HTTPClient())
 The second example utilizes the **Early Exit (Guard Clause)** pattern.
 
 By handling errors and bad response statuses immediately at the top of the block, you can return early or throw exceptions before proceeding. This keeps the primary logic ("happy path") completely unindented, improving readability and reducing deeply nested `if/else` blocks across your service layer.
+
+---
+
+## Testing
+
+The test suite (`HTTPClientTest.cls`) uses `HttpCalloutMock` to simulate HTTP responses without making real callouts.
+
+### Run via Salesforce CLI
+
+```bash
+sf project deploy start --source-dir . --wait 10
+sf apex run test --name HTTPClientTest --wait 10 --result-format human --verbose
+```
+
+### Run via Developer Console
+
+1. Deploy both `HTTPClient.cls` and `HTTPClientTest.cls` to your org.
+2. Open **Developer Console** → **Test** → **New Run**.
+3. Select `HTTPClientTest` and click **Run**.
+
+### What's Covered
+
+- Fluent interface (method chaining)
+- Default values (`GET`, `application/json`)
+- All HTTP methods: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
+- Invalid method resets to `GET`
+- Custom headers and content types
+- String and Map payloads (string takes precedence)
+- Missing endpoint guard clause
+- HTTP error responses (4xx, 5xx)
+- Exception handling (`statusCode = -1`, `errorMsg` populated)
+- Empty response body
