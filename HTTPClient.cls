@@ -1,7 +1,7 @@
 public class HTTPClient {
     private String apiEndpoint;
-    private String contentType;
-    private String httpMethod;
+    private String contentType = 'application/json';
+    private String httpMethod  = 'GET';
     private String payloadStr;
     private Map<String, String> headers    = new Map<String, String>();
     private Map<String, Object> payloadMap = new Map<String, Object>();
@@ -25,12 +25,14 @@ public class HTTPClient {
 
     public HTTPClient setHttpMethod(String httpMethod) {
         Set<String> validMethods = new Set<String>{'GET', 'POST', 'PUT', 'PATCH', 'DELETE'};
+
         if (String.isNotBlank(httpMethod) && validMethods.contains(httpMethod.toUpperCase())) {
             this.httpMethod = httpMethod.toUpperCase();
-        } 
+        }
         else {
             this.httpMethod = 'GET';
         }
+        
         return this;
     }
 
@@ -50,15 +52,21 @@ public class HTTPClient {
     }
 
     public HTTPClient fetch() {
+        if (String.isBlank(this.apiEndpoint)) {
+            this.statusCode = -1;
+            this.errorMsg   = 'API endpoint is not set';
+            return this;
+        }
+
         try {
             Http http = new Http();
             HttpRequest req = new HttpRequest();
 
             req.setHeader('Accept', 'application/json');
             req.setTimeout(10000);
-            req.setHeader('Content-Type', String.isNotBlank(this.contentType) ? this.contentType : 'application/json');
+            req.setHeader('Content-Type', this.contentType);
             req.setEndpoint(this.apiEndpoint);
-            req.setMethod(String.isNotBlank(this.httpMethod) ? this.httpMethod : 'GET');
+            req.setMethod(this.httpMethod);
 
             if (!this.headers.isEmpty()) {
                 for (String key : this.headers.keySet()) {
