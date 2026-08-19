@@ -1,4 +1,4 @@
-public class APIClient {
+public class HTTPClient {
     private String apiEndpoint;
     private String contentType;
     private String httpMethod;
@@ -11,19 +11,19 @@ public class APIClient {
     public Map<String, Object> jsonResponse { get; private set; }
     public String              errorMsg     { get; private set; }
 
-    public APIClient setApiEndpoint(String apiEndpoint) {
+    public HTTPClient setApiEndpoint(String apiEndpoint) {
         if (String.isNotBlank(apiEndpoint)) {
             this.apiEndpoint = apiEndpoint;
         }
         return this;
     }
 
-    public APIClient setContentType(String contentType) {
+    public HTTPClient setContentType(String contentType) {
         this.contentType = String.isNotBlank(contentType) ? contentType : 'application/json';
         return this;
     }
 
-    public APIClient setHttpMethod(String httpMethod) {
+    public HTTPClient setHttpMethod(String httpMethod) {
         Set<String> validMethods = new Set<String>{'GET', 'POST', 'PUT', 'PATCH', 'DELETE'};
         if (String.isNotBlank(httpMethod) && validMethods.contains(httpMethod.toUpperCase())) {
             this.httpMethod = httpMethod.toUpperCase();
@@ -34,22 +34,22 @@ public class APIClient {
         return this;
     }
 
-    public APIClient setPayloadStr(String payloadStr) {
+    public HTTPClient setPayloadStr(String payloadStr) {
         this.payloadStr = String.isNotBlank(payloadStr) ? payloadStr : '';
         return this;
     }
 
-    public APIClient setHeaders(Map<String, String> headers) {
+    public HTTPClient setHeaders(Map<String, String> headers) {
         this.headers = (headers != null) ? headers : new Map<String, String>();
         return this;
     }
 
-    public APIClient setPayloadMap(Map<String, Object> payloadMap) {
+    public HTTPClient setPayloadMap(Map<String, Object> payloadMap) {
         this.payloadMap = (payloadMap != null) ? payloadMap : new Map<String, Object>();
         return this;
     }
 
-    public APIClient fetch() {
+    public HTTPClient fetch() {
         try {
             Http http = new Http();
             HttpRequest req = new HttpRequest();

@@ -1,4 +1,4 @@
-# Salesforce API Client
+# Salesforce HTTP Client
 
 > *"A little copying is better than a little dependency."* — Go Proverb. Watch [Rob Pike's talk](https://www.youtube.com/watch?v=PAAkCSZUG1c&t=9m28s)
 
@@ -19,7 +19,7 @@ String reqPayload = 'grant_type=password' +
     '&username='      + EncodingUtil.urlEncode(userName,     'UTF-8') +
     '&password='      + EncodingUtil.urlEncode(passWord,     'UTF-8');
 
-APIClient req = (new APIClient())
+HTTPClient req = (new HTTPClient())
     .setApiEndpoint(API_ENDPOINT)
     .setContentType('application/x-www-form-urlencoded')
     .setHttpMethod('POST')
@@ -45,7 +45,7 @@ reqPayload.put('key2', 'value2');
 Map<String, String> headers = new Map<String, String>();
 headers.put('Authorization', 'Bearer long_token_here');
 
-APIClient req = (new APIClient())
+HTTPClient req = (new HTTPClient())
     .setApiEndpoint(API_ENDPOINT)
     .setContentType('application/json')
     .setHttpMethod('POST')
@@ -70,10 +70,10 @@ String result = (String) req.jsonResponse.get('some_key');
 ## Key Features & Code Patterns
 
 ### Method Chaining (Fluent Interface)
-The `APIClient` class uses method chaining by returning `this` from every setter. This builder pattern lets you instantiate, configure headers, attach payloads, and execute the HTTP request in a single, fluent expression:
+The `HTTPClient` class uses method chaining by returning `this` from every setter. This builder pattern lets you instantiate, configure headers, attach payloads, and execute the HTTP request in a single, fluent expression:
 
 ```java
-APIClient req = (new APIClient())
+HTTPClient req = (new HTTPClient())
     .setApiEndpoint(API_ENDPOINT)
     .setHttpMethod('POST')
     .setContentType('application/json')
